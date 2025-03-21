@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
+import cors from "cors";
 
 // Cargar variables de entorno desde .env
 dotenv.config();
@@ -9,6 +10,9 @@ const apiKey = process.env.DEEPSEEK_API_KEY;
 const endpoint = "https://api.deepseek.com/v1/chat/completions";
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Habilitar CORS para permitir peticiones desde el frontend
+app.use(cors());
 
 // Función que envía la pregunta a DeepSeek y retorna la respuesta
 async function askDeepSeek(question) {
@@ -51,7 +55,17 @@ app.get('/ask', async (req, res) => {
   }
 });
 
-// Levantar el servidor
-app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
+// Ruta de prueba para verificar que el servidor está funcionando
+app.get('/', (req, res) => {
+  res.send('API de consultas funcionando correctamente');
 });
+
+// Configuración para Vercel - exportar app para serverless functions
+export default app;
+
+// Para desarrollo local
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
+  });
+}
