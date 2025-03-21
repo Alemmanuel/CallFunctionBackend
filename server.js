@@ -60,12 +60,11 @@ app.get('/', (req, res) => {
   res.send('API de consultas funcionando correctamente');
 });
 
-// Configuración para Vercel - exportar app para serverless functions
-export default app;
+// IMPORTANTE: Iniciar el servidor siempre, no solo en desarrollo
+// Esto es crucial para Render
+app.listen(port, () => {
+  console.log(`Servidor escuchando en el puerto ${port}`);
+});
 
-// Para desarrollo local
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(port || 3000, () => {
-    console.log(`Servidor escuchando en el puerto ${port}`);
-  });
-}
+// Para compatibilidad con Vercel, seguimos exportando la app
+export default app;
