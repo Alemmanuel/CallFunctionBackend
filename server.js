@@ -65,7 +65,7 @@ export default app;
 
 // Para desarrollo local
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => {
+  app.listen(port || 3000, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
   });
 }
